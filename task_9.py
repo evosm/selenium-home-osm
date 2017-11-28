@@ -40,13 +40,10 @@ class test_two(unittest.TestCase):
                 print('True! Country list true')
             else:
                 print('False! Country list false')
-            for row in rows_list:
-                country = row.find_element_by_xpath("./td[5]")
-                if country.text in country_zones:
-                    zones_link = row.find_element_by_css_selector('td:nth-child(5) > a')
-                    zones_link.send_keys(Keys.COMMAND + Keys.RETURN)
-                    windows = driver.window_handles
-                    driver.switch_to_window(windows[1])
+            for id in range(len(rows_list)):
+                country = rows_list[id].find_element_by_xpath("./td[5]").text
+                if country in country_zones:
+                    rows_list[id].find_element_by_css_selector('td:nth-child(5) > a').click()
                     country_zones_list = []
                     sorted_zones_country_list = []
                     zones_table = driver.find_element_by_id('table-zones')
@@ -61,8 +58,10 @@ class test_two(unittest.TestCase):
                         print('True! Zones Country list true')
                     else:
                         print('False! Zones Country list false')
-                    driver.close()
-                    driver.switch_to_window(windows[0])
+                    driver.find_element_by_xpath("//*[@href='http://localhost/litecart/admin/?app=countries&doc=countries']").click()
+                    table = driver.find_element_by_id('content')
+                    rows_list = table.find_elements_by_css_selector('tr.row')
+
 
         except NoSuchElementException as e:
             print('error:', e)
@@ -81,11 +80,8 @@ class test_two(unittest.TestCase):
             driver.find_element_by_xpath("//*[@href='http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones']").click()
             table = driver.find_element_by_css_selector('#content > form > table')
             rows_list = table.find_elements_by_css_selector('tr.row')
-            for row in rows_list:
-                country = row.find_element_by_css_selector('td:nth-child(3) > a')
-                country.send_keys(Keys.COMMAND + Keys.RETURN)
-                windows = driver.window_handles
-                driver.switch_to_window(windows[1])
+            for id in range(len(rows_list)):
+                rows_list[id].find_element_by_css_selector('td:nth-child(3) > a').click()
                 zones_table = driver.find_element_by_id('table-zones')
                 zones_rows = zones_table.find_elements_by_css_selector('tr')
                 list_of_zones = []
@@ -104,8 +100,9 @@ class test_two(unittest.TestCase):
                     print('YES')
                 else:
                     print('NO')
-                driver.close()
-                driver.switch_to_window(windows[0])
+                driver.find_element_by_xpath("//*[@href='http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones']").click()
+                table = driver.find_element_by_css_selector('#content > form > table')
+                rows_list = table.find_elements_by_css_selector('tr.row')
 
 
         except NoSuchElementException as e:
